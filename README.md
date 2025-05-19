@@ -26,20 +26,20 @@
 
 ---
 
-## 📁 專案檔案結構（主要）
+## 專案檔案結構（主要）
 
 -final_project
--index.php                # 電影清單頁面
--movie_detail.php         # 單部電影詳情與評論顯示頁
--login.php                # 登入畫面
--login_process.php        # 登入處理邏輯
--logout.php               # 登出功能
--register.php             # 使用者註冊畫面
--register_process.php     # 註冊處理邏輯
--review_submit.php        # 評論送出處理
--delete_review.php        # 評論刪除功能
--config.php               # 資料庫連線設定
--images                   # 儲存電影海報、劇照等靜態圖片
+-index.php               ->電影清單頁面
+-movie_detail.php        ->單部電影詳情與評論顯示頁
+-login.php               ->登入畫面
+-login_process.php       ->登入處理邏輯
+-logout.php              ->登出功能
+-register.php            ->使用者註冊畫面
+-register_process.php    ->註冊處理邏輯
+-review_submit.php       ->評論送出處理
+-delete_review.php       ->評論刪除功能
+-config.php              ->資料庫連線設定
+-images                  ->儲存電影海報、劇照等靜態圖片
 
 ---
 
