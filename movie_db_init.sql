@@ -68,6 +68,7 @@ CREATE TABLE StreamingLinks (
     link_id INT AUTO_INCREMENT PRIMARY KEY,
     movie_id INT,
     link_title VARCHAR(50),
+    video_url VARCHAR(255),
     FOREIGN KEY (movie_id) REFERENCES Movies(movie_id)
 );
 
