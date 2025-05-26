@@ -52,6 +52,18 @@ $avg_stmt->bind_param("i", $movie_id);
 $avg_stmt->execute();
 $avg_result = $avg_stmt->get_result();
 $avg_rating = $avg_result->fetch_assoc()['avg_rating'] ?? '尚無評分';
+
+//串流
+$movie_id = intval($_GET['movie_id']);
+$sql = "SELECT s.video_url, s.link_title 
+        FROM StreamingLinks s 
+        JOIN mov_streaming ms ON s.link_id = ms.link_id 
+        WHERE ms.mov_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $movie_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$streaming_links = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 
@@ -162,6 +174,42 @@ $avg_rating = $avg_result->fetch_assoc()['avg_rating'] ?? '尚無評分';
         </div>
     <?php endwhile; ?>
 </div>
+
+
+<div id="video-carousel" style="position: relative; z-index: 1; margin-bottom: 30px;">
+    <h3>Streaming 預覽 
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
+            <a href="edit_streaming.php?movie_id=<?= $movie_id ?>"
+               style="margin-left: 20px; font-size: 14px; background: #3498db; color: white; padding: 4px 10px; border-radius: 5px; text-decoration: none;">
+                修改
+            </a>
+        <?php endif; ?>
+    </h3>
+    <iframe id="streaming-video" width="640" height="360"
+            src="" frameborder="0" allowfullscreen style="display: block;"></iframe>
+    <br>
+    <button onclick="nextVideo()" style="z-index: 2; position: relative;">下一部 ➡️</button>
+</div>
+
+<script>
+    const videos = <?= json_encode($streaming_links); ?>;
+    let currentIndex = 0;
+
+    function loadVideo(index) {
+        const iframe = document.getElementById('streaming-video');
+        iframe.src = videos[index]['video_url'];
+    }
+
+    function nextVideo() {
+        currentIndex = (currentIndex + 1) % videos.length;
+        loadVideo(currentIndex);
+    }
+
+    window.onload = () => {
+        if (videos.length > 0) loadVideo(0);
+    };
+</script>
+
 
 
 <?php if (isset($_SESSION['username'])): ?>
