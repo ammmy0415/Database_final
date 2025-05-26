@@ -50,8 +50,8 @@ CREATE TABLE MovieStills (
     movie_id INT,
     image_url VARCHAR(255),
     description TEXT,
-    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id)
-);
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id)ON DELETE CASCADE
+)ENGINE=InnoDB;
 
 -- 建立 MovieFashion 穿搭推薦表
 CREATE TABLE MovieFashion (
@@ -60,8 +60,8 @@ CREATE TABLE MovieFashion (
     look_title VARCHAR(50),
     look_image_url VARCHAR(255),
     description TEXT,
-    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id)
-);
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id)ON DELETE CASCADE
+)ENGINE=InnoDB;
 
 -- 建立 StreamingLinks 串流連結表
 CREATE TABLE StreamingLinks (
@@ -94,8 +94,8 @@ CREATE TABLE mov_still (
     movie_id INT,
     still_id INT,
     PRIMARY KEY (movie_id, still_id),
-    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id),
-    FOREIGN KEY (still_id) REFERENCES MovieStills(still_id)
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE,
+    FOREIGN KEY (still_id) REFERENCES MovieStills(still_id) ON DELETE CASCADE
 );
 
 -- 關聯表 mov_re
@@ -104,9 +104,9 @@ CREATE TABLE mov_re (
     review_id INT,
     user_id INT,
     PRIMARY KEY (movie_id, review_id),
-    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id),
-    FOREIGN KEY (review_id) REFERENCES Reviews(review_id),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE,
+    FOREIGN KEY (review_id) REFERENCES Reviews(review_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
 -- 關聯表 rev_user（實際上已在 Reviews 中表示，可視情況保留）
@@ -114,8 +114,8 @@ CREATE TABLE rev_user (
     review_id INT,
     user_id INT,
     PRIMARY KEY (review_id, user_id),
-    FOREIGN KEY (review_id) REFERENCES Reviews(review_id),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (review_id) REFERENCES Reviews(review_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
 -- 關聯表 mov_fashion
@@ -123,8 +123,8 @@ CREATE TABLE mov_fashion (
     mov_id INT,
     fashion_id INT,
     PRIMARY KEY (mov_id, fashion_id),
-    FOREIGN KEY (mov_id) REFERENCES Movies(movie_id),
-    FOREIGN KEY (fashion_id) REFERENCES MovieFashion(fashion_id)
+    FOREIGN KEY (mov_id) REFERENCES Movies(movie_id) ON DELETE CASCADE,
+    FOREIGN KEY (fashion_id) REFERENCES MovieFashion(fashion_id) ON DELETE CASCADE
 );
 
 -- 關聯表 mov_streaming

@@ -2,7 +2,7 @@
 // config.php — 在本機測試時用這個版本
 $servername = "localhost";
 $username = "root";
-$password = "root"; // 預設 MAMP 密碼
+$password = "00000000"; // 預設 MAMP 密碼
 $dbname = "movie";
 
 // 建立連線

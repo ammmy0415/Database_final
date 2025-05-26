@@ -2,11 +2,12 @@
 session_start();
 require_once('config.php');
 
-if (!isset($_GET['id'])) {
+
+if (!isset($_GET['movie_id'])) {
     die("未提供電影 ID");
 }
-$movie_id = intval($_GET['id']);
-
+$movie_id = intval($_GET['movie_id']);
+$isAdmin = (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin');
 // 查詢電影基本資料
 $movie_sql = "SELECT * FROM Movies WHERE movie_id = ?";
 $stmt = $conn->prepare($movie_sql);
@@ -34,7 +35,7 @@ $fashion_result = $fashion->get_result();
 
 // 查詢評論
 $review_sql = "
-    SELECT R.review_id, U.username, R.rating, R.review_text, R.created_at
+    SELECT R.review_id,R.user_id, U.username, R.rating, R.review_text, R.created_at
     FROM Reviews R
     JOIN Users U ON R.user_id = U.user_id
     WHERE R.movie_id = ?
@@ -53,6 +54,10 @@ $avg_result = $avg_stmt->get_result();
 $avg_rating = $avg_result->fetch_assoc()['avg_rating'] ?? '尚無評分';
 ?>
 
+
+
+
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -63,6 +68,19 @@ $avg_rating = $avg_result->fetch_assoc()['avg_rating'] ?? '尚無評分';
         .section { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; }
         img { max-width: 200px; display: block; margin-bottom: 10px; }
         .rating { color: #e67e22; font-weight: bold; }
+        .edit-button {
+            float: right;
+            background-color: #3498db;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .edit-button:hover {
+            background-color: #2980b9;
+}
+
     </style>
 </head>
 <body>
@@ -70,7 +88,14 @@ $avg_rating = $avg_result->fetch_assoc()['avg_rating'] ?? '尚無評分';
 <h1><?= htmlspecialchars($movie['title']) ?></h1>
 
 <div class="section">
-    <h2>電影資訊</h2>
+    <h2>電影資訊
+        <?php if ($isAdmin): ?>
+            <span class="admin-action">
+                <a href="edit_movie.php?movie_id=<?= $movie_id ?>"class="edit-button">修改</a>
+            </span>
+        <?php endif; ?>
+
+    </h2>
     <p><strong>導演：</strong><?= htmlspecialchars($movie['director']) ?></p>
     <p><strong>上映日期：</strong><?= $movie['release_date'] ?></p>
     <p><strong>簡介：</strong><br><?= nl2br(htmlspecialchars($movie['summary'])) ?></p>
@@ -80,7 +105,14 @@ $avg_rating = $avg_result->fetch_assoc()['avg_rating'] ?? '尚無評分';
 </div>
 
 <div class="section">
-    <h2>劇照</h2>
+    <h2>劇照
+        <?php if ($isAdmin): ?>
+            <span class="admin-action">
+                <a href="edit_stills.php?movie_id=<?= $movie_id ?>"class="edit-button">修改</a>
+            </span>
+        <?php endif; ?>
+
+    </h2>
     <?php while ($still = $stills_result->fetch_assoc()): ?>
         <img src="<?= htmlspecialchars($still['image_url']) ?>" alt="劇照">
         <p><?= htmlspecialchars($still['description']) ?></p>
@@ -88,7 +120,15 @@ $avg_rating = $avg_result->fetch_assoc()['avg_rating'] ?? '尚無評分';
 </div>
 
 <div class="section">
-    <h2>穿搭推薦</h2>
+    <h2>穿搭推薦
+        <?php if ($isAdmin): ?>
+            <span class="admin-action">
+                <a href="edit_fashion.php?movie_id=<?= $movie_id ?>"class="edit-button">修改</a>
+            </span>
+        <?php endif; ?>
+
+
+    </h2>
     <?php while ($look = $fashion_result->fetch_assoc()): ?>
         <img src="<?= htmlspecialchars($look['look_image_url']) ?>" alt="穿搭圖">
         <p><strong><?= htmlspecialchars($look['look_title']) ?></strong><br>
@@ -99,25 +139,30 @@ $avg_rating = $avg_result->fetch_assoc()['avg_rating'] ?? '尚無評分';
 <div class="section">
     <h2>評分與影評</h2>
     <p class="rating">平均評分：<?= $avg_rating ?> / 5</p>
-    <ul>
-    <?php while ($rev = $review_result->fetch_assoc()): ?>
-    <li>
-        <strong><?= htmlspecialchars($rev['username']) ?></strong>（<?= $rev['rating'] ?> 分）<br>
-        <?= nl2br(htmlspecialchars($rev['review_text'])) ?><br>
-        <small><?= $rev['created_at'] ?></small>
 
-        <?php if (isset($_SESSION['user_id']) && $_SESSION['username'] === $rev['username']): ?>
-        <br>
-        <a href="delete_review.php?review_id=<?= urlencode($rev['review_id']) ?>&movie_id=<?= urlencode($movie_id) ?>"
-        onclick="return confirm('你確定要刪除這則評論嗎？');"
-        style="color: red;">🗑 刪除</a>
-        <?php endif; ?>
-    </li>
-    <hr>
-<?php endwhile; ?>
+    <?php while ($review = $review_result->fetch_assoc()): ?>
+        <div class="review-item">
+            <div class="review-text">
+                <strong><?= htmlspecialchars($review['username']) ?></strong>（<?= $review['rating'] ?> 分）<br>
+                <?= nl2br(htmlspecialchars($review['review_text'])) ?><br>
+                <small><?= $review['created_at'] ?></small>
+            </div>
 
-    </ul>
+            <div class="review-delete">
+               <?php if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] === $review['user_id'] || $isAdmin)): ?>
+                    <form method="POST" action="delete_review.php" onsubmit="return confirm('確定刪除這則評論嗎？');" style="display:inline;">
+                        <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
+                        <input type="hidden" name="movie_id" value="<?= $movie_id ?>">
+                        <button type="submit" style="color: red; border: none; background: none; cursor: pointer;">🗑</button>
+                    </form>
+                <?php endif; ?>
+
+                
+            </div>
+        </div>
+    <?php endwhile; ?>
 </div>
+
 
 <?php if (isset($_SESSION['username'])): ?>
 <div class="section">
