@@ -65,4 +65,5 @@
 - 圖片要放置於 `images/` 資料夾中，並在資料庫中修改其圖片路徑
 - `session_start()` 一定要寫在每頁最開頭，否則 session 無法存取
 - 資料表需搭配 `movie_db_init.sql` 與 `sample_data.sql` 建立與填充初始資料
+- streamlinks的video_url 是https://www.youtube.com/embed/再加上該部影片的亂碼
 
