@@ -1,0 +1,146 @@
+body {
+    font-family: "Microsoft JhengHei", sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.fashion-form {
+    margin-bottom: 20px;
+}
+
+.fashion-item {
+    border: 1.5px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #fafafa;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.fashion-img {
+    display: block;
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1.5px solid #ccc;
+}
+
+.fashion-item label {
+    display: block;
+    margin: 12px 0 6px;
+    font-weight: 600;
+    color: #555;
+}
+
+.fashion-item input[type="text"],
+.fashion-item textarea {
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 12px;
+    border: 1.8px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    resize: vertical;
+}
+
+.fashion-item button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.fashion-item button:hover {
+    background-color: #45a049;
+}
+
+.fashion-item input[type="text"]:focus,
+.fashion-item textarea:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.btn-update, .btn-add {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-update:hover, .btn-add:hover {
+    background-color: #2980b9;
+}
+
+.delete-form {
+    margin-bottom: 40px;
+}
+
+.btn-delete {
+    padding: 8px 18px;
+    background: transparent;
+    border: 2px solid #e74c3c;
+    color: #e74c3c;
+    font-weight: 700;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-delete:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 15px;
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+.success-msg {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px 15px;
+    border-radius: 8px;
+    color: #155724;
+    margin-bottom: 15px;
+    font-weight: 600;
+}

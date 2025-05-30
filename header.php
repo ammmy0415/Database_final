@@ -1,11 +1,12 @@
 <!-- header.php -->
 <?php session_start(); ?>
+<link rel="stylesheet" href="style/header.css">
 
-<div style="text-align: right; padding: 10px; background-color: #eee;">
+<div class="header-bar">
     <?php if (isset($_SESSION['username'])): ?>
-        👤 歡迎，<?= htmlspecialchars($_SESSION['username']) ?>！
-        <a href="logout.php" style="margin-left: 10px;">登出</a>
+        <span class="username">👤 歡迎，<?= htmlspecialchars($_SESSION['username']) ?>！</span>
+        <a href="logout.php">登出</a>
     <?php else: ?>
-        <a href="login.php">登入</a> | <a href="register.php">註冊</a>
+        <a href="login.php" style="margin-right: 15px">登入</a>|<a href="register.php">註冊</a>
     <?php endif; ?>
 </div>

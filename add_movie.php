@@ -30,35 +30,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>新增電影</title>
-    <style>
+    <link rel="stylesheet" href="style/add_movie.css" />
+    <!--style>
         body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
         form { background: white; padding: 20px; border-radius: 8px; max-width: 500px; margin: auto; }
         label { display: block; margin-top: 15px; }
         input[type="text"], input[type="date"] { width: 100%; padding: 8px; }
         input[type="submit"] { margin-top: 20px; padding: 10px 20px; background-color: #333; color: white; border: none; }
         .error { color: red; }
-    </style>
+    </style-->
 </head>
+
 <body>
+<div class="container">
+    <h2>🎬 新增電影</h2>
 
-<h2>🎬 新增電影</h2>
+    <?php if (!empty($error)): ?>
+    <p class="error"><?= htmlspecialchars($error) ?></p>
+    <?php endif; ?>
 
-<?php if (!empty($error)): ?>
-<p class="error"><?= htmlspecialchars($error) ?></p>
-<?php endif; ?>
+    <form method="POST">
+        <label>電影名稱（必填）</label>
+        <input type="text" name="title" required>
 
-<form method="POST">
-    <label>電影名稱（必填）</label>
-    <input type="text" name="title" required>
+        <label>導演</label>
+        <input type="text" name="director">
 
-    <label>導演</label>
-    <input type="text" name="director">
+        <label>上映日期（必填）</label>
+        <input type="date" name="release_date" required>
 
-    <label>上映日期（必填）</label>
-    <input type="date" name="release_date" required>
+        <button type="submit" class="submit">新增電影</button>
+    </form>
+    <p><a href="movie_detail.php?movie_id=<?= $movie_id ?>" class="back-link">⬅️ 回到電影頁面</a></p>
 
-    <input type="submit" value="新增電影">
-</form>
-
+</div>
 </body>
 </html>

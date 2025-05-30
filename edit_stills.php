@@ -54,38 +54,57 @@ $stmt->execute();
 $stills_result = $stmt->get_result();
 ?>
 
-<h2>🎞️ 編輯電影劇照</h2>
 
-<?php while ($still = $stills_result->fetch_assoc()): ?>
-    <form method="post" action="edit_stills.php?movie_id=<?= $movie_id ?>">
-        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-            <img src="<?= htmlspecialchars($still['image_url']) ?>" alt="劇照" width="200"><br>
-            <label>圖片連結：</label><br>
-            <input type="text" name="stills[<?= $still['still_id'] ?>][image_url]" value="<?= htmlspecialchars($still['image_url']) ?>" size="80"><br>
-            <label>描述：</label><br>
-            <textarea name="stills[<?= $still['still_id'] ?>][description]" rows="3" cols="60"><?= htmlspecialchars($still['description']) ?></textarea><br>
-            <button type="submit" name="update" value="<?= $still['still_id'] ?>">💾 儲存單筆</button>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>編輯電影劇照</title>
+    <link rel="stylesheet" href="style/edit_stills.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>🎞️ 編輯電影劇照</h2>
+
+    <?php while ($still = $stills_result->fetch_assoc()): ?>
+        <form method="post" action="edit_stills.php?movie_id=<?= $movie_id ?>">
+            <div class="still-item">
+                <img src="<?= htmlspecialchars($still['image_url']) ?>" alt="劇照">
+                
+                <label>圖片連結：</label>
+                <input type="text" name="stills[<?= $still['still_id'] ?>][image_url]" value="<?= htmlspecialchars($still['image_url']) ?>" required>
+
+                <label>描述：</label>
+                <textarea name="stills[<?= $still['still_id'] ?>][description]" rows="3"><?= htmlspecialchars($still['description']) ?></textarea>
+
+                <button type="submit" name="update" value="<?= $still['still_id'] ?>">💾 儲存單筆</button>
+            </div>
+        </form>
+
+        <form method="post" action="delete_still.php" onsubmit="return confirm('確定要刪除這張劇照嗎？');">
+            <input type="hidden" name="still_id" value="<?= $still['still_id'] ?>">
+            <input type="hidden" name="movie_id" value="<?= $movie_id ?>">
+            <button type="submit">🗑 刪除劇照</button>
+        </form>
+    <?php endwhile; ?>
+
+    <hr>
+
+    <h3>➕ 新增劇照</h3>
+    <form method="post">
+        <div class="still-item">
+            <label>圖片連結：</label>
+            <input type="text" name="new_image_url" required>
+
+            <label>描述：</label>
+            <textarea name="new_description" rows="3" required></textarea>
+
+            <button type="submit" name="add">新增劇照</button>
         </div>
     </form>
 
-    <!-- ✅ 獨立的刪除表單 -->
-    <form method="post" action="delete_still.php" onsubmit="return confirm('確定要刪除這張劇照嗎？');" style="margin-bottom: 20px;">
-        <input type="hidden" name="still_id" value="<?= $still['still_id'] ?>">
-        <input type="hidden" name="movie_id" value="<?= $movie_id ?>">
-        <button type="submit" style="color:red;">🗑 刪除劇照</button>
-    </form>
-<?php endwhile; ?>
-
-
-<hr>
-
-<h3>➕ 新增劇照</h3>
-<form method="post">
-    <label>圖片連結：</label><br>
-    <input type="text" name="new_image_url" size="80" required><br>
-    <label>描述：</label><br>
-    <textarea name="new_description" rows="3" cols="60" required></textarea><br>
-    <button type="submit" name="add">新增劇照</button>
-</form>
-
-<p><a href="movie_detail.php?movie_id=<?= $movie_id ?>">⬅️ 回到電影頁面</a></p>
+    <p><a href="movie_detail.php?movie_id=<?= $movie_id ?>">⬅️ 回到電影頁面</a></p>
+</div>
+</body>
+</html>

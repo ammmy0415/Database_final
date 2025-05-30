@@ -80,39 +80,47 @@ $streaming_links = $result->fetch_all(MYSQLI_ASSOC);
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <title>編輯 Streaming</title>
+    <title>編輯串流資訊</title>
+    <link rel="stylesheet" href="style/edit_streaming.css" />
 </head>
+
 <body>
+<div class="container">
     <h2>編輯電影串流連結</h2>
 
     <form method="POST">
         <?php foreach ($streaming_links as $link): ?>
-            <div style="margin-bottom: 15px;">
-                標題：
+            <div class="edit-form">
+                <label>標題：</label>
                 <input type="text" name="streaming[<?= $link['link_id'] ?>][link_title]" value="<?= htmlspecialchars($link['link_title']) ?>" required>
-                影片網址：
+                
+                <label>影片網址：</label>
                 <input type="text" name="streaming[<?= $link['link_id'] ?>][video_url]" value="<?= htmlspecialchars($link['video_url']) ?>" required>
-                <button type="submit" name="delete_id" value="<?= $link['link_id'] ?>" onclick="return confirm('確定要刪除這筆資料？')">❌ 刪除</button>
+                
+                <button type="submit" name="delete_id" value="<?= $link['link_id'] ?>" class="delete" onclick="return confirm('確定要刪除這筆資料？')">❌ 刪除</button>
             </div>
         <?php endforeach; ?>
-        <button type="submit" name="update">💾 儲存修改</button>
+        <button type="submit" name="update" class="submit">💾 儲存修改</button>
     </form>
 
     <hr>
 
     <h3>新增新的串流影片</h3>
     <form method="POST">
-        標題：<input type="text" name="new_title" required>
-        影片網址：<input type="text" name="new_url" required>
-        <button type="submit" name="add">➕ 新增</button>
+        <div class="edit-form">
+            <label>標題：</lable>
+            <input type="text" name="new_title" required>
+            
+            <label>影片網址：</lable>
+            <input type="text" name="new_url" required>
+            
+            <button type="submit" name="add" class="submit">➕ 新增</button>
+        </div>
     </form>
 
     <hr>
-    <a href="movie_detail.php?movie_id=<?= $movie_id ?>" 
-    style="display: inline-block; margin-top: 20px; background-color: #555; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none;">
-        ← 回到電影頁面
-    </a>
+    <p><a href="movie_detail.php?movie_id=<?= $movie_id ?>" class="back-link">⬅️ 回到電影頁面</a></p>
 
-    
+</div>
 </body>
 </html>

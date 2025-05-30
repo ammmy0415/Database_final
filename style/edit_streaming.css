@@ -1,0 +1,124 @@
+body {
+    font-family: "Microsoft JhengHei", sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 600px;
+    background-color: #fff;
+    margin: 0 auto;
+    padding: 25px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #555;
+}
+
+.edit-form {
+    border: 1.5px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #fafafa;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.edit-form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #555;
+}
+
+.edit-form input[type="text"],
+.edit-form input[type="date"],
+.edit-form textarea {
+    width: 100%;
+    padding: 8px 12px;
+    margin-top: 6px;
+    border: 1.8px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.edit-form input[type="text"]:focus,
+.edit-form input[type="date"]:focus,
+.edit-form textarea:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.edit-form textarea {
+    resize: vertical;
+}
+
+.submit {
+    margin-top: 25px;
+    padding: 12px 25px;
+    background-color: #3498db;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit:hover {
+    background-color: #2980b9;
+}
+
+.delete {
+    color: white;
+    background-color: #e74c3c;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 15px; /* ✅ 新增：讓刪除按鈕與上方欄位有距離 */
+    display: inline-block;
+}
+
+.delete:hover {
+    background-color: #c0392b;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+.success-msg {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px 15px;
+    border-radius: 8px;
+    color: #155724;
+    margin-bottom: 15px;
+    font-weight: 600;
+}

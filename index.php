@@ -23,7 +23,8 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>電影清單</title>
-    <style>
+    <link rel="stylesheet" href="style/index.css">
+    <!--style>
         body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
         table { width: 100%; border-collapse: collapse; background: white; margin-top: 20px; }
         th, td { padding: 10px; border-bottom: 1px solid #ccc; text-align: left; }
@@ -39,7 +40,7 @@ $result = $conn->query($sql);
             border-radius: 5px;
             text-decoration: none;
         }
-    </style>
+    </style-->
 </head>
 <body>
 

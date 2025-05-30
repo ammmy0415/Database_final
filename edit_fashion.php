@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
         $stmt->bind_param("sssii", $look_title, $look_image_url, $description, $fashion_id, $movie_id);
         $stmt->execute();
     }
-    echo "<p>✅ 穿搭推薦已更新成功！</p>";
+    echo "<p class='success-msg'>✅ 穿搭推薦已更新成功！</p>";
 }
 
 // ✅ 新增推薦並同步到關聯表
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
     $stmt2->bind_param("ii", $movie_id, $new_fashion_id);
     $stmt2->execute();
 
-    echo "<p>✅ 已新增穿搭推薦並同步寫入關聯表！</p>";
+    echo "<p class='success-msg'>✅ 已新增穿搭推薦並同步寫入關聯表！</p>";
 }
 
 // ✅ 撈出該電影的所有穿搭 Look
@@ -59,49 +59,64 @@ $stmt->execute();
 $result = $stmt->get_result();
 ?>
 
-<h2>👕 編輯電影穿搭推薦</h2>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <title>編輯電影穿搭推薦</title>
+    <link rel="stylesheet" href="style/edit_fashion.css" />
+</head>
+<body>
 
-<?php while ($fashion = $result->fetch_assoc()): ?>
-    <!-- 修改表單 -->
-    <form method="post" action="edit_fashion.php?movie_id=<?= $movie_id ?>">
-        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
-            <img src="<?= htmlspecialchars($fashion['look_image_url']) ?>" width="200" alt="穿搭圖"><br>
+<div class="container">
+    <h2>👕 編輯電影穿搭推薦</h2>
 
-            <label>Look 標題：</label><br>
-            <input type="text" name="fashion[<?= $fashion['fashion_id'] ?>][look_title]" value="<?= htmlspecialchars($fashion['look_title']) ?>" size="50"><br>
+    <?php while ($fashion = $result->fetch_assoc()): ?>
+    <form method="post" action="edit_fashion.php?movie_id=<?= $movie_id ?>" class="fashion-form">
+        <div class="fashion-item">
+            <img src="<?= htmlspecialchars($fashion['look_image_url']) ?>" alt="穿搭圖" class="fashion-img">
 
-            <label>圖片連結：</label><br>
-            <input type="text" name="fashion[<?= $fashion['fashion_id'] ?>][look_image_url]" value="<?= htmlspecialchars($fashion['look_image_url']) ?>" size="80"><br>
+            <label>Look 標題：</label>
+            <input type="text" name="fashion[<?= $fashion['fashion_id'] ?>][look_title]" value="<?= htmlspecialchars($fashion['look_title']) ?>">
 
-            <label>描述：</label><br>
-            <textarea name="fashion[<?= $fashion['fashion_id'] ?>][description]" rows="3" cols="60"><?= htmlspecialchars($fashion['description']) ?></textarea><br>
+            <label>圖片連結：</label>
+            <input type="text" name="fashion[<?= $fashion['fashion_id'] ?>][look_image_url]" value="<?= htmlspecialchars($fashion['look_image_url']) ?>">
 
-            <button type="submit" name="update">💾 儲存變更</button>
+            <label>描述：</label>
+            <textarea name="fashion[<?= $fashion['fashion_id'] ?>][description]" rows="3"><?= htmlspecialchars($fashion['description']) ?></textarea>
+
+            <button type="submit" name="update" class="btn-update">💾 儲存變更</button>
         </div>
     </form>
 
-    <!-- 刪除表單 -->
-    <form method="post" action="delete_fashion.php" onsubmit="return confirm('確定要刪除這筆推薦嗎？');" style="margin-bottom: 30px;">
+    <form method="post" action="delete_fashion.php" onsubmit="return confirm('確定要刪除這筆推薦嗎？');" class="delete-form">
         <input type="hidden" name="fashion_id" value="<?= $fashion['fashion_id'] ?>">
         <input type="hidden" name="movie_id" value="<?= $movie_id ?>">
-        <button type="submit" style="color:red;">🗑 刪除推薦</button>
+        <button type="submit" class="btn-delete">🗑 刪除推薦</button>
     </form>
-<?php endwhile; ?>
+    <?php endwhile; ?>
 
-<hr>
+    <hr>
 
-<h3>➕ 新增穿搭推薦</h3>
-<form method="post">
-    <label>Look 標題：</label><br>
-    <input type="text" name="new_look_title" size="50" required><br>
+    <h2>➕ 新增穿搭推薦</h2>
+    <form method="post" class="fashion-form">
+        <div class="fashion-item">
+            <label>Look 標題：</label>
+            <input type="text" name="new_look_title" size="50" required>
 
-    <label>圖片連結：</label><br>
-    <input type="text" name="new_look_image_url" size="80" required><br>
+            <label>圖片連結：</label>
+            <input type="text" name="new_look_image_url" size="80" required>
 
-    <label>描述：</label><br>
-    <textarea name="new_description" rows="3" cols="60" required></textarea><br>
+            <label>描述：</label>
+            <textarea name="new_description" rows="3" cols="60" required></textarea>
 
-    <button type="submit" name="add">新增穿搭推薦</button>
-</form>
+            <button type="submit" name="add">新增穿搭推薦</button>
+        </div>
+    </form>
 
-<p><a href="movie_detail.php?movie_id=<?= $movie_id ?>">⬅️ 回到電影頁面</a></p>
+
+    <p><a href="movie_detail.php?movie_id=<?= $movie_id ?>" class="back-link">⬅️ 回到電影頁面</a></p>
+</div>
+
+</body>
+</html>

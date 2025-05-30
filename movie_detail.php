@@ -6,6 +6,8 @@ require_once('config.php');
 if (!isset($_GET['movie_id'])) {
     die("未提供電影 ID");
 }
+
+
 $movie_id = intval($_GET['movie_id']);
 $isAdmin = (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin');
 // 查詢電影基本資料
@@ -54,7 +56,6 @@ $avg_result = $avg_stmt->get_result();
 $avg_rating = $avg_result->fetch_assoc()['avg_rating'] ?? '尚無評分';
 
 //串流
-$movie_id = intval($_GET['movie_id']);
 $sql = "SELECT s.video_url, s.link_title 
         FROM StreamingLinks s 
         JOIN mov_streaming ms ON s.link_id = ms.link_id 
@@ -75,7 +76,8 @@ $streaming_links = $result->fetch_all(MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($movie['title']) ?> - 詳細資訊</title>
-    <style>
+    <link rel="stylesheet" href="style\movie_detail.css">
+    <!--style>
         body { font-family: sans-serif; background: #f0f0f0; padding: 20px; }
         .section { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; }
         img { max-width: 200px; display: block; margin-bottom: 10px; }
@@ -91,9 +93,9 @@ $streaming_links = $result->fetch_all(MYSQLI_ASSOC);
         }
         .edit-button:hover {
             background-color: #2980b9;
-}
+        }
 
-    </style>
+    </style-->
 </head>
 <body>
 
@@ -154,18 +156,18 @@ $streaming_links = $result->fetch_all(MYSQLI_ASSOC);
 
     <?php while ($review = $review_result->fetch_assoc()): ?>
         <div class="review-item">
-            <div class="review-text">
+            <div class="comment-box">
                 <strong><?= htmlspecialchars($review['username']) ?></strong>（<?= $review['rating'] ?> 分）<br>
                 <?= nl2br(htmlspecialchars($review['review_text'])) ?><br>
                 <small><?= $review['created_at'] ?></small>
             </div>
 
-            <div class="review-delete">
+            <div class="comment-box">
                <?php if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] === $review['user_id'] || $isAdmin)): ?>
                     <form method="POST" action="delete_review.php" onsubmit="return confirm('確定刪除這則評論嗎？');" style="display:inline;">
                         <input type="hidden" name="review_id" value="<?= $review['review_id'] ?>">
                         <input type="hidden" name="movie_id" value="<?= $movie_id ?>">
-                        <button type="submit" style="color: red; border: none; background: none; cursor: pointer;">🗑</button>
+                        <button type="submit">🗑</button>
                     </form>
                 <?php endif; ?>
 
@@ -176,7 +178,7 @@ $streaming_links = $result->fetch_all(MYSQLI_ASSOC);
 </div>
 
 
-<div id="video-carousel" style="position: relative; z-index: 1; margin-bottom: 30px;">
+<div id="video-carousel">
     <h3>Streaming 預覽 
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
             <a href="edit_streaming.php?movie_id=<?= $movie_id ?>"
@@ -185,11 +187,10 @@ $streaming_links = $result->fetch_all(MYSQLI_ASSOC);
             </a>
         <?php endif; ?>
     </h3>
-    <iframe id="streaming-video" width="640" height="360"
-            src="" frameborder="0" allowfullscreen style="display: block;"></iframe>
-    <br>
-    <button onclick="nextVideo()" style="z-index: 2; position: relative;">下一部 ➡️</button>
+    <iframe id="streaming-video" src="" frameborder="0" allowfullscreen></iframe>
+    <button class="btn-next" onclick="nextVideo()">下一部 ➡️</button>
 </div>
+
 
 <script>
     const videos = <?= json_encode($streaming_links); ?>;
@@ -217,12 +218,17 @@ $streaming_links = $result->fetch_all(MYSQLI_ASSOC);
     <h2>撰寫你的評論</h2>
     <form action="review_submit.php" method="post">
         <input type="hidden" name="movie_id" value="<?= $movie_id ?>">
-        <label for="rating">評分（0~5）:</label>
-        <input type="number" step="0.1" min="0" max="5" name="rating" required><br><br>
+        
+        <div class="comment-box">
+            <label for="rating">評分（0~5）:</label>
+            <input type="number" step="0.1" min="0" max="5" name="rating" required><br><br>
+        </div>
 
-        <label for="review_text">評論內容:</label><br>
-        <textarea name="review_text" rows="5" cols="50" required></textarea><br><br>
-
+        <div class="comment-box">
+            <label for="review_text">評論內容:</label><br>
+            <textarea name="review_text" rows="5" cols="50" required></textarea><br><br>
+        </div>
+        
         <input type="submit" value="送出評論">
     </form>
 </div>

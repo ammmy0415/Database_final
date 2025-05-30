@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("ssssssi", $title, $director, $genre, $release_date, $summary, $poster_url, $movie_id);
     $stmt->execute();
 
-    echo "<p>✅ 電影資料已更新成功！</p>";
+    echo "<p class='success-msg'>✅ 電影資料已更新成功！</p>";
 }
 
 // 查詢電影資料
@@ -43,27 +43,40 @@ if ($result->num_rows === 0) {
 $movie = $result->fetch_assoc();
 ?>
 
-<h2>✏️ 修改電影資訊</h2>
-<form method="post">
-    <label>標題：</label><br>
-    <input type="text" name="title" value="<?= htmlspecialchars($movie['title']) ?>" required><br><br>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <title>修改電影資訊 - <?= htmlspecialchars($movie['title']) ?></title>
+    <link rel="stylesheet" href="style/edit_movie.css" />
+</head>
+<body>
 
-    <label>導演：</label><br>
-    <input type="text" name="director" value="<?= htmlspecialchars($movie['director']) ?>"><br><br>
+<div class="container">
+    <h2>✏️ 修改電影資訊</h2>
+    <form method="post" class="edit-form">
+        <label>標題：</label>
+        <input type="text" name="title" value="<?= htmlspecialchars($movie['title']) ?>" required />
 
-    <label>類型：</label><br>
-    <input type="text" name="genre" value="<?= htmlspecialchars($movie['genre']) ?>"><br><br>
+        <label>導演：</label>
+        <input type="text" name="director" value="<?= htmlspecialchars($movie['director']) ?>" />
 
-    <label>上映日期：</label><br>
-    <input type="date" name="release_date" value="<?= $movie['release_date'] ?>"><br><br>
+        <label>類型：</label>
+        <input type="text" name="genre" value="<?= htmlspecialchars($movie['genre']) ?>" />
 
-    <label>簡介：</label><br>
-    <textarea name="summary" rows="5" cols="50"><?= htmlspecialchars($movie['summary']) ?></textarea><br><br>
+        <label>上映日期：</label>
+        <input type="date" name="release_date" value="<?= $movie['release_date'] ?>" />
 
-    <label>海報連結：</label><br>
-    <input type="text" name="poster_url" value="<?= htmlspecialchars($movie['poster_url']) ?>"><br><br>
+        <label>簡介：</label>
+        <textarea name="summary" rows="5"><?= htmlspecialchars($movie['summary']) ?></textarea>
 
-    <button type="submit">儲存變更</button>
-</form>
+        <label>海報連結：</label>
+        <input type="text" name="poster_url" value="<?= htmlspecialchars($movie['poster_url']) ?>" />
 
-<p><a href="movie_detail.php?movie_id=<?= $movie_id ?>">⬅️ 回到電影頁面</a></p>
+        <button type="submit" class="btn-submit">儲存變更</button>
+    </form>
+
+    <p><a href="movie_detail.php?movie_id=<?= $movie_id ?>" class="back-link">⬅️ 回到電影頁面</a></p>
+</div>
+</body>
+</html>

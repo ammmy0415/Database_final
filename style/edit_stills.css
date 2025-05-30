@@ -1,0 +1,87 @@
+body {
+    font-family: "Microsoft JhengHei", sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 600px;
+    background-color: #fff;
+    margin: 0 auto;
+    padding: 25px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* ======= 劇照樣式通用卡片區塊 ======= */
+.still-item {
+    border: 1.5px solid #ddd;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    background-color: #fdfdfd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.still-item img {
+    display: block;
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 12px;
+    border-radius: 6px;
+}
+
+/* ======= 標籤樣式 ======= */
+.still-item label {
+    display: block;
+    margin: 12px 0 6px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* ======= 表單欄位樣式 ======= */
+.still-item input[type="text"],
+.still-item textarea {
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    border: 1.8px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    resize: vertical;
+}
+
+/* ======= 按鈕樣式 ======= */
+.still-item button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.still-item button:hover {
+    background-color: #45a049;
+}
+
+/* ======= 刪除按鈕樣式 ======= */
+form[action="delete_still.php"] button {
+    color: white;
+    background-color: #e74c3c;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form[action="delete_still.php"] button:hover {
+    background-color: #c0392b;
+}
