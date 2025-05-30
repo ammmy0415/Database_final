@@ -1,6 +1,6 @@
 <?php include('header.php'); ?>
 <?php
-session_start();
+//session_start();
 require_once('config.php');
 
 // 判斷是否為 Admin
