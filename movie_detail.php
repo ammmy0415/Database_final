@@ -76,7 +76,7 @@ $streaming_links = $result->fetch_all(MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($movie['title']) ?> - 詳細資訊</title>
-    <link rel="stylesheet" href="style\movie_detail.css">
+    <link rel="stylesheet" href="style/movie_detail.css">
     <!--style>
         body { font-family: sans-serif; background: #f0f0f0; padding: 20px; }
         .section { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; }
@@ -114,7 +114,8 @@ $streaming_links = $result->fetch_all(MYSQLI_ASSOC);
     <p><strong>上映日期：</strong><?= $movie['release_date'] ?></p>
     <p><strong>簡介：</strong><br><?= nl2br(htmlspecialchars($movie['summary'])) ?></p>
     <?php if (!empty($movie['poster_url'])): ?>
-        <img src="<?= htmlspecialchars($movie['poster_url']) ?>" alt="海報">
+        <img src="<?= htmlspecialchars($movie['poster_url']) ?>" alt="劇照"
+            style="max-height:400px; width:auto; height:auto; display:block; margin:10px auto; object-fit:contain;">
     <?php endif; ?>
 </div>
 
@@ -128,7 +129,8 @@ $streaming_links = $result->fetch_all(MYSQLI_ASSOC);
 
     </h2>
     <?php while ($still = $stills_result->fetch_assoc()): ?>
-        <img src="<?= htmlspecialchars($still['image_url']) ?>" alt="劇照">
+        <img src="<?= htmlspecialchars($still['image_url']) ?>" alt="劇照"  
+            style="max-height:400px; width:auto; height:auto; display:block; margin:10px auto; object-fit:contain;">
         <p><?= htmlspecialchars($still['description']) ?></p>
     <?php endwhile; ?>
 </div>
@@ -144,7 +146,8 @@ $streaming_links = $result->fetch_all(MYSQLI_ASSOC);
 
     </h2>
     <?php while ($look = $fashion_result->fetch_assoc()): ?>
-        <img src="<?= htmlspecialchars($look['look_image_url']) ?>" alt="穿搭圖">
+        <img src="<?= htmlspecialchars($look['look_image_url']) ?>" alt="穿搭圖"
+            style="max-height:400px; width:auto; height:auto; display:block; margin:10px auto; object-fit:contain;">
         <p><strong><?= htmlspecialchars($look['look_title']) ?></strong><br>
         <?= htmlspecialchars($look['description']) ?></p>
     <?php endwhile; ?>
