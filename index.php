@@ -1,3 +1,4 @@
+<!-- index.php -->
 <?php include('header.php'); ?>
 <?php
 //session_start();
@@ -6,16 +7,34 @@ require_once('config.php');
 // 判斷是否為 Admin
 $isAdmin = (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin');
 
-// 取得所有電影與其平均評分（若有）
-$sql = "
-    SELECT M.movie_id, M.title, M.director, M.release_date,
-           ROUND(AVG(R.rating), 1) AS avg_rating
-    FROM Movies M
-    LEFT JOIN Reviews R ON M.movie_id = R.movie_id
-    GROUP BY M.movie_id
-    ORDER BY M.release_date DESC;
-";
-$result = $conn->query($sql);
+// 搜尋功能處理
+$search = $_GET['search'];
+if (!empty($search)) {
+    $search_param = '%' . $search . '%';
+    $stmt = $conn->prepare("
+        SELECT M.movie_id, M.title, M.director, M.release_date,
+               ROUND(AVG(R.rating), 1) AS avg_rating
+        FROM Movies M
+        LEFT JOIN Reviews R ON M.movie_id = R.movie_id
+        WHERE M.title LIKE ? OR M.director LIKE ?
+        GROUP BY M.movie_id
+        ORDER BY M.release_date DESC;
+    ");
+    $stmt->bind_param("ss", $search_param, $search_param);
+    $stmt->execute();
+    $result = $stmt->get_result();
+} else {
+    // 原本未搜尋的情況
+    $sql = "
+        SELECT M.movie_id, M.title, M.director, M.release_date,
+               ROUND(AVG(R.rating), 1) AS avg_rating
+        FROM Movies M
+        LEFT JOIN Reviews R ON M.movie_id = R.movie_id
+        GROUP BY M.movie_id
+        ORDER BY M.release_date DESC;
+    ";
+    $result = $conn->query($sql);
+}
 ?>
 
 <!DOCTYPE html>
@@ -64,6 +83,13 @@ $result = $conn->query($sql);
         </tr>
     </thead>
     <tbody>
+        <?php if ($result->num_rows === 0): ?>
+            <tr>
+                <td colspan="<?= $isAdmin ? 5 : 4 ?>" style="text-align: center; color: #888;">
+                    找不到相關電影或導演
+                </td>
+            </tr>
+        <?php endif; ?>
         <?php while ($row = $result->fetch_assoc()): ?>
         <tr>
             <td>
