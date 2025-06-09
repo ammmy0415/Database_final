@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <button type="submit" class="submit">新增電影</button>
     </form>
-    <p><a href="movie_detail.php?movie_id=<?= $movie_id ?>" class="back-link">⬅️ 回到電影頁面</a></p>
+    <p><a href="index.php" class="back-link">⬅️ 回到電影頁面</a></p>
 
 </div>
 </body>
